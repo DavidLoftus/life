@@ -1,5 +1,6 @@
 #include <state.h>
 #include <transform.h>
+#include <sstream>
 #include "catch.hpp"
 
 namespace Catch {
@@ -206,7 +207,8 @@ TEST_CASE("Transform works properly with dims=8x64", "[Transform]") {
 }
 
 void gridFromString(life::Grid& grid, const std::string& gridStr) {
-
+    std::istringstream iss{gridStr};
+    iss >> grid;
 }
 
 TEST_CASE("Transform imported grids", "[NextState]") {
@@ -266,6 +268,79 @@ TEST_CASE("Transform imported grids", "[NextState]") {
                 "               \n";
         
         life::Grid expected{16, 16};
+
+        gridFromString(srcGrid, frame0);
+        life::Transform(srcGrid, dstGrid);
+        gridFromString(expected, frame1);
+        REQUIRE(dstGrid == expected);
+
+
+        gridFromString(srcGrid, frame1);
+        life::Transform(srcGrid, dstGrid);
+        gridFromString(expected, frame2);
+        REQUIRE(dstGrid == expected);
+
+
+        gridFromString(srcGrid, frame2);
+        life::Transform(srcGrid, dstGrid);
+        gridFromString(expected, frame0);
+        REQUIRE(dstGrid == expected);
+    }
+
+    SECTION("3 pulsars") {
+        srcGrid = dstGrid = life::Grid{16, 48};
+
+        std::string frame0 =
+                "                    #     #                     \n"
+                "   ###   ###        #     #        ##     ##    \n"
+                "                    ##   ##         ##   ##     \n"
+                " #    # #    #                   #  # # # #  #  \n"
+                " #    # #    #  ###  ## ##  ###  ### ## ## ###  \n"
+                " #    # #    #    # # # # # #     # # # # # #   \n"
+                "   ###   ###        ##   ##        ###   ###    \n"
+                "                                                \n"
+                "   ###   ###        ##   ##        ###   ###    \n"
+                " #    # #    #    # # # # # #     # # # # # #   \n"
+                " #    # #    #  ###  ## ##  ###  ### ## ## ###  \n"
+                " #    # #    #                   #  # # # #  #  \n"
+                "                    ##   ##         ##   ##     \n"
+                "   ###   ###        #     #        ##     ##    \n"
+                "                    #     #                     \n";
+        std::string frame1 =
+                "    #     #                                     \n"
+                "    #     #        ##     ##       ###   ###    \n"
+                "    ##   ##         ##   ##                     \n"
+                "                 #  # # # #  #   #    # #    #  \n"
+                "###  ## ##  ###  ### ## ## ###   #    # #    #  \n"
+                "  # # # # # #     # # # # # #    #    # #    #  \n"
+                "    ##   ##        ###   ###       ###   ###    \n"
+                "                                                \n"
+                "    ##   ##        ###   ###       ###   ###    \n"
+                "  # # # # # #     # # # # # #    #    # #    #  \n"
+                "###  ## ##  ###  ### ## ## ###   #    # #    #  \n"
+                "                 #  # # # #  #   #    # #    #  \n"
+                "    ##   ##         ##   ##                     \n"
+                "    #     #        ##     ##       ###   ###    \n"
+                "    #     #                                     \n";
+
+        std::string frame2 =
+                "                                    #     #     \n"
+                "   ##     ##       ###   ###        #     #     \n"
+                "    ##   ##                         ##   ##     \n"
+                " #  # # # #  #   #    # #    #                  \n"
+                " ### ## ## ###   #    # #    #  ###  ## ##  ### \n"
+                "  # # # # # #    #    # #    #    # # # # # #   \n"
+                "   ###   ###       ###   ###        ##   ##     \n"
+                "                                                \n"
+                "   ###   ###       ###   ###        ##   ##     \n"
+                "  # # # # # #    #    # #    #    # # # # # #   \n"
+                " ### ## ## ###   #    # #    #  ###  ## ##  ### \n"
+                " #  # # # #  #   #    # #    #                  \n"
+                "    ##   ##                         ##   ##     \n"
+                "   ##     ##       ###   ###        #     #     \n"
+                "                                    #     #     \n";
+
+        life::Grid expected{16, 48};
 
         gridFromString(srcGrid, frame0);
         life::Transform(srcGrid, dstGrid);
