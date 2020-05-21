@@ -55,16 +55,18 @@ void sumVerticalNeighbours(const Grid& src, Grid& dst) {
 
 void sumHorizontalNeighbours(Nibbles& dstRow) {
     assert(dstRow.word_size() > 0);
+    constexpr unsigned shiftAmount = (Nibbles::NIBBLE_BITS * (Nibbles::NIBBLES_PER_WORD - 1));
 
     unsigned lastNibble = 0;
     for (int i = 0; i < dstRow.word_size() - 1; ++i) {
         auto word = dstRow.GetWord(i);
         auto rightShift = (word >> Nibbles::NIBBLE_BITS) | lastNibble;
-        auto leftShift = (word << Nibbles::NIBBLE_BITS) | (dstRow.GetWord(i + 1) & Nibbles::NIBBLE_MASK);
+        auto nextShiftedNibble = dstRow.GetWord(i + 1) & Nibbles::NIBBLE_MASK;
+        auto leftShift = (word << Nibbles::NIBBLE_BITS) | (nextShiftedNibble << shiftAmount);
 
         dstRow.SetWord(i, word + rightShift + leftShift);
 
-        lastNibble = word >> (Nibbles::NIBBLE_BITS * (Nibbles::NIBBLES_PER_WORD - 1));
+        lastNibble = word >> shiftAmount;
     }
 
     auto word = dstRow.GetWord(dstRow.word_size() - 1);
