@@ -10,7 +10,7 @@ namespace life {
 
         using NibbleWord = Nibbles::NibbleWord;
 
-        Grid(size_t rows, size_t columns) : _rows(rows), _columns(columns), _nibble_rows(rows, Nibbles(columns)) {
+        Grid(size_t rows = 0, size_t columns = 0) : _rows(rows), _columns(columns), _nibble_rows(rows, Nibbles(columns)) {
 
         }
 
