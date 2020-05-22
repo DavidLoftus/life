@@ -1,4 +1,4 @@
-#include "state.h"
+#include "life/state.h"
 #include <algorithm>
 #include <iostream>
 

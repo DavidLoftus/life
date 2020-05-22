@@ -1,7 +1,7 @@
 
 #include "catch.hpp"
 
-#include <nibbles.h>
+#include <life/nibbles.h>
 
 TEST_CASE("Accessors and mutators work", "[Nibbles]") {
     life::Nibbles nibbles{1024};

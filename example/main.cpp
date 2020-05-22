@@ -1,8 +1,8 @@
 #include <iostream>
 #include <chrono>
 
-#include <state.h>
-#include <transform.h>
+#include <life/state.h>
+#include <life/transform.h>
 
 void printUsage(char* commandName, std::ostream& os = std::cout) {
     os << "Usage: " << commandName << " WIDTH HEIGHT [N]\n"

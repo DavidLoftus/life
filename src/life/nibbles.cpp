@@ -1,4 +1,4 @@
-#include "nibbles.h"
+#include "life/nibbles.h"
 
 #include <algorithm>
 
